@@ -1,2 +1,7 @@
-# golang-backend-mysql-mux-gorm
+# golang-backend
+# Language used:
+    MySQL
+    Gorm/mux
+    JWt
+    
 
