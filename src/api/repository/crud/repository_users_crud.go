@@ -3,7 +3,6 @@ package crud
 import (
 	"api/models"
 	"api/utils/channels"
-	"errors"
 	"fmt"
 
 	"gorm.io/gorm"
@@ -58,7 +57,7 @@ func (r *repositoryUsersCRUD) FindById(id int) (models.User, error) {
 	user := models.User{}
 	done := make(chan bool)
 	go func(ch chan<- bool) {
-		err = r.db.Debug().Model(&models.User{}).Where("id = ?", id).Take(&user).Error
+		err = r.db.Debug().Model(&models.User{}).Where("id = ?", id).Limit(1).Find(&user).Error
 		if err != nil {
 			ch <- false
 			return
@@ -68,8 +67,8 @@ func (r *repositoryUsersCRUD) FindById(id int) (models.User, error) {
 	if channels.OK(done) {
 		return user, nil
 	}
-	if gorm.ErrRecordNotFound(err) {
-		return models.User{}, errors.New("Record not found")
-	}
+	// if gorm.ErrRecordNotFound.Error(err) {
+	// 	return models.User{}, errors.New("Record not found")
+	// }
 	return models.User{}, err
 }
