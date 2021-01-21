@@ -1,17 +1,10 @@
 package auto
 
-import (
-	"api/database"
-	"api/models"
-	"api/utils/console"
-	"log"
-)
-
 func Load() {
-	db, err := database.Connect()
-	if err != nil {
-		log.Fatal(err)
-	}
+	// db, err := database.Connect()
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
 
 	// defer db.Close()
 
@@ -25,11 +18,11 @@ func Load() {
 	// 	log.Fatal(err)
 	// }
 
-	for _, user := range users {
-		err = db.Debug().Model(&models.User{}).Create(&user).Error
-		if err != nil {
-			log.Fatal(err)
-		}
-		console.Pretty(user)
-	}
+	// for _, user := range users {
+	// 	err = db.Debug().Model(&models.User{}).Create(&user).Error
+	// 	if err != nil {
+	// 		log.Fatal(err)
+	// 	}
+	// 	console.Pretty(user)
+	// }
 }

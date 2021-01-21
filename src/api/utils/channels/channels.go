@@ -1,9 +1,13 @@
 package channels
 
-func OK(done <- chan bool) bool{
-	select{
+import "fmt"
+
+func OK(done <-chan bool) bool {
+
+	select {
 	case ok := <-done:
-		if ok{
+		if ok {
+			fmt.Println("ok true")
 			return true
 		}
 	}

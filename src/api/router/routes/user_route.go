@@ -6,29 +6,36 @@ import (
 )
 
 var userRoutes = []Route{
+
 	Route{
-		Url:     "/users",
-		Method:  http.MethodGet,
-		Handler: controllers.GetUsers,
+		Url:          "/user",
+		Method:       http.MethodPost,
+		Handler:      controllers.CreateUser,
+		AuthRequired: false,
 	},
 	Route{
-		Url:     "/user/{id}",
-		Method:  http.MethodGet,
-		Handler: controllers.GetUser,
+		Url:          "/user/{id}",
+		Method:       http.MethodPut,
+		Handler:      controllers.UpdateUser,
+		AuthRequired: true,
 	},
 	Route{
-		Url:     "/user",
-		Method:  http.MethodPost,
-		Handler: controllers.CreateUser,
+		Url:          "/user/{id}",
+		Method:       http.MethodDelete,
+		Handler:      controllers.DeleteUser,
+		AuthRequired: true,
+	},
+
+	Route{
+		Url:          "/profilepic",
+		Method:       http.MethodPut,
+		Handler:      controllers.UploadImage,
+		AuthRequired: true,
 	},
 	Route{
-		Url:     "/user/{id}",
-		Method:  http.MethodPut,
-		Handler: controllers.UpdateUser,
-	},
-	Route{
-		Url:     "/user/{id}",
-		Method:  http.MethodDelete,
-		Handler: controllers.DeleteUser,
+		Url:          "/changepassword",
+		Method:       http.MethodPut,
+		Handler:      controllers.ChangePassword,
+		AuthRequired: true,
 	},
 }
