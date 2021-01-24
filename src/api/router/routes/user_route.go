@@ -9,20 +9,14 @@ var userRoutes = []Route{
 
 	Route{
 		Url:          "/user",
-		Method:       http.MethodPost,
-		Handler:      controllers.CreateUser,
+		Method:       http.MethodGet,
+		Handler:      controllers.UserProfile,
 		AuthRequired: false,
 	},
 	Route{
 		Url:          "/user/{id}",
 		Method:       http.MethodPut,
 		Handler:      controllers.UpdateUser,
-		AuthRequired: true,
-	},
-	Route{
-		Url:          "/user/{id}",
-		Method:       http.MethodDelete,
-		Handler:      controllers.DeleteUser,
 		AuthRequired: true,
 	},
 

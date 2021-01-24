@@ -24,4 +24,16 @@ var LoginRoutes = []Route{
 		Handler:      controllers.Registration,
 		AuthRequired: false,
 	},
+	Route{
+		Url:          "/forgotpassword",
+		Method:       http.MethodPost,
+		Handler:      controllers.ForgotPassword,
+		AuthRequired: false,
+	},
+	Route{
+		Url:          "/newpassword",
+		Method:       http.MethodPost,
+		Handler:      controllers.NewPassword,
+		AuthRequired: false,
+	},
 }
