@@ -76,7 +76,7 @@ func UploadImage(w http.ResponseWriter, r *http.Request) {
 			responses.ERROR(w, http.StatusUnprocessableEntity, err)
 			return
 		}
-		w.Header().Set("Location", fmt.Sprintf("%s%s/%d", r.Host, r.RequestURI))
+		// w.Header().Set("Location", fmt.Sprintf("%s%s/%d", r.Host, r.RequestURI))
 		responses.JSON(w, http.StatusCreated, user)
 	}(repo)
 	fmt.Println(name)
@@ -363,7 +363,7 @@ func AdminUploadImage(w http.ResponseWriter, r *http.Request) {
 				responses.ERROR(w, http.StatusUnprocessableEntity, err)
 				return
 			}
-			w.Header().Set("Location", fmt.Sprintf("%s%s/%d", r.Host, r.RequestURI))
+			// w.Header().Set("Location", fmt.Sprintf("%s%s/%d", r.Host, r.RequestURI))
 			responses.JSON(w, http.StatusCreated, user)
 		}(repo)
 		fmt.Println(name)

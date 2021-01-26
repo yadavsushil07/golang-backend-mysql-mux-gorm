@@ -5,6 +5,7 @@ import (
 	"api/models"
 	"api/responses"
 	"api/security"
+	"api/utils/email"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -12,7 +13,7 @@ import (
 	"time"
 )
 
-// This fuction is use to login for user
+// Login fuction is use to login for user  .
 func Login(w http.ResponseWriter, r *http.Request) {
 
 	body, err := ioutil.ReadAll(r.Body)
@@ -42,7 +43,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	responses.JSON(w, http.StatusOK, token)
 }
 
-// This function is use for registration of new user
+// Registration function is use for registration of new user
 func Registration(w http.ResponseWriter, r *http.Request) {
 
 	body, _ := ioutil.ReadAll(r.Body)
@@ -68,7 +69,7 @@ func Registration(w http.ResponseWriter, r *http.Request) {
 	responses.JSON(w, http.StatusOK, token)
 }
 
-//  AdminLongin ...
+//  AdminLogin function is only use for admin login
 func AdminLogin(w http.ResponseWriter, r *http.Request) {
 
 	body, err := ioutil.ReadAll(r.Body) // it reads the data for the api asign to the body
@@ -117,7 +118,7 @@ func ForgotPassword(w http.ResponseWriter, r *http.Request) {
 		fmt.Println("user exist")
 		otp, err = security.GenerateCode("abcdefghijklmnopqrstuvwxyz", time.Now())
 		// otp = security.GenerateOTP()
-		// email.SendEmail2(fPass.Email, otp)
+		email.SendEmail2(fPass.Email, otp)
 		if err != nil {
 			fmt.Println(err)
 		}
