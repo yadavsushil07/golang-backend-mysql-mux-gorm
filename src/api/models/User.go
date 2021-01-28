@@ -22,6 +22,7 @@ type User struct {
 	Status     string    `json:"status"`
 	CreatedAt  time.Time `gorm:"default:current_timestamp()" json:"created_at"`
 	UpdatedAt  time.Time `gorm:"default:current_timestamp()" json:"updated_at"`
+	// Blog       []Blog    `gorm:"foreignkey:AuthorID"json:"Blog"`
 }
 
 func (u *User) BeforeSave(tx *gorm.DB) (err error) {

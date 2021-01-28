@@ -11,7 +11,7 @@ var userRoutes = []Route{
 		Url:          "/user",
 		Method:       http.MethodGet,
 		Handler:      controllers.UserProfile,
-		AuthRequired: false,
+		AuthRequired: true,
 	},
 	Route{
 		Url:          "/user/{id}",

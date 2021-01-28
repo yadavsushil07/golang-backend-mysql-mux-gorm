@@ -10,11 +10,11 @@ func SendEmail2(email, otp string) {
 
 	// Sender data.
 	from := "susyadavb12@gmail.com"
-	password := os.Getenv(SMTP_PASS)
+	password := os.Getenv("SMTP_PASS")
 	email = email
 	// Receiver email address.
 	to := []string{
-		"mak.gnu@gmail.com",
+		"susyadavb12@gmail.com",
 	}
 
 	// smtp server configuration.

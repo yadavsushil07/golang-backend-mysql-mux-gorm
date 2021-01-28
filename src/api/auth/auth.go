@@ -57,6 +57,7 @@ func SignUp(email, password string) (string, error) {
 	user := models.User{}
 	user.Email = email
 	user.Password = password
+	user.Status = "Activated"
 	var err error
 	var db *gorm.DB
 	done := make(chan bool)

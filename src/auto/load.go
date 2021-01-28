@@ -6,23 +6,35 @@ func Load() {
 	// 	log.Fatal(err)
 	// }
 
-	// defer db.Close()
+	// // err = db.Debug().DropTableIfExists(&models.Blog{}, &models.User{}).Error
+	// // if err != nil {
+	// // 	log.Fatal(err)
+	// // }
 
-	// err = db.Debug().DropTableIfExists(&models.User{}).Error
-	// if err != nil {
-	// 	log.Fatal(err)
-	// }
+	// // err = db.Debug().AutoMigrate(&models.Blog{}, &models.User{}).Error
+	// // if err != nil {
+	// // 	log.Fatal(err)
+	// // }
 
-	// err = db.Debug().AutoMigrate(&models.User{}).Error
-	// if err != nil {
-	// 	log.Fatal(err)
-	// }
+	// // err = db.Debug().Model(&models.Blog{}).AddForeignKey("Author_id", "users(id)", "cascade", "cascade").Error
+	// // if err != nil {
+	// // 	log.Fatal(err)
+	// // }
 
-	// for _, user := range users {
-	// 	err = db.Debug().Model(&models.User{}).Create(&user).Error
+	// for i, _ := range users {
+	// 	err = db.Debug().Model(&models.User{}).Create(&users[i]).Error
 	// 	if err != nil {
 	// 		log.Fatal(err)
 	// 	}
-	// 	console.Pretty(user)
+	// 	blogs[i].AuthorID = users[i].ID
+	// 	err = db.Debug().Model(&models.Blog{}).Create(&blogs).Error
+	// 	if err != nil {
+	// 		log.Fatal(err)
+	// 	}
+	// 	// err = db.Debug().Model(&blogs[i]).Related(&blogs[i].AuthorName).Error
+	// 	// if err != nil {
+	// 	// 	log.Fatal(err)
+	// 	// }
+	// 	console.Pretty(users)
 	// }
 }

@@ -18,6 +18,7 @@ func Load() []Route {
 	routes := userRoutes
 	routes = append(routes, LoginRoutes...)
 	routes = append(routes, AdminRoutes...)
+	routes = append(routes, BlogsRoutes...)
 	return routes
 }
 
