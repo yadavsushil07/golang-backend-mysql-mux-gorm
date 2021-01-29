@@ -10,8 +10,7 @@ import (
 	"gorm.io/gorm"
 )
 
-// this fuction is use to signIn only if user is active
-// and it return token as an output
+// SignIn fuction is use to signIn only if user is active
 func SignIn(email, password string) (string, error) {
 
 	user := models.User{}
@@ -50,7 +49,7 @@ func SignIn(email, password string) (string, error) {
 	return "", err
 }
 
-//this function is use to create new user when user is registering himself
+//SignUp function is use to create new user when user is registering himself
 // and it return the token of the user
 func SignUp(email, password string) (string, error) {
 
@@ -84,7 +83,7 @@ func SignUp(email, password string) (string, error) {
 	return "", err
 }
 
-//this is signIn Api for admin
+//AdminSignIn is signIn Api for admin
 func AdminSignIn(email, password string) (string, error) {
 
 	user := models.User{}
@@ -121,6 +120,7 @@ func AdminSignIn(email, password string) (string, error) {
 	return "", err
 }
 
+// EmailPassword to recover/new password
 func EmailPassword(email string) bool {
 
 	// This fuction checks the user email at the time of forgot password api that user exist or not
@@ -154,6 +154,7 @@ func EmailPassword(email string) bool {
 	return false
 }
 
+// SetPassword is fuction call after email password
 func SetPassword(email, password string) bool {
 
 	//this function is use set new password after user is sent opt on its email

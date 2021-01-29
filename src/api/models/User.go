@@ -12,6 +12,7 @@ import (
 	"gorm.io/gorm"
 )
 
+// User this the model of the user it defines the database
 type User struct {
 	ID         int       `gorm:"prinmary_key;auto_increment" json:"id"`
 	Name       string    `gorm:"size:40;not null;" json:"name"`
@@ -25,6 +26,8 @@ type User struct {
 	// Blog       []Blog    `gorm:"foreignkey:AuthorID"json:"Blog"`
 }
 
+// BeforeSave this function is of gorm in this fuction we convert the password into hash
+//before we save it into database.
 func (u *User) BeforeSave(tx *gorm.DB) (err error) {
 	hashedPassword, err := security.Hash(u.Password)
 	fmt.Println(hashedPassword)
@@ -47,12 +50,15 @@ func (u *User) BeforeSave(tx *gorm.DB) (err error) {
 // 	return nil
 // }
 
+// Prepare it is use at the time of creating the database
 func (u *User) Prepare() {
 	u.ID = 0
 	u.Name = html.EscapeString(strings.TrimSpace(u.Name))
 	u.Email = html.EscapeString(strings.TrimSpace(u.Email))
 }
 
+// Validate is use to validate the information enter by the user is
+//correct or not
 func (u *User) Validate(action string) error {
 	switch action {
 	case "update":

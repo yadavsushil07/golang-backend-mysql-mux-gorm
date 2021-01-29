@@ -69,7 +69,7 @@ func Registration(w http.ResponseWriter, r *http.Request) {
 	responses.JSON(w, http.StatusOK, token)
 }
 
-//  AdminLogin function is only use for admin login
+// AdminLogin function is only use for admin login
 func AdminLogin(w http.ResponseWriter, r *http.Request) {
 
 	body, err := ioutil.ReadAll(r.Body) // it reads the data for the api asign to the body
@@ -99,6 +99,7 @@ func AdminLogin(w http.ResponseWriter, r *http.Request) {
 	responses.JSON(w, http.StatusOK, token)
 }
 
+// ForgotPassword is use to recover/new Password
 func ForgotPassword(w http.ResponseWriter, r *http.Request) {
 	body, err := ioutil.ReadAll(r.Body)
 	var fPass models.Password
@@ -133,6 +134,7 @@ func ForgotPassword(w http.ResponseWriter, r *http.Request) {
 	responses.JSON(w, http.StatusOK, otp)
 }
 
+// NewPassword is call after forgotpassword
 func NewPassword(w http.ResponseWriter, r *http.Request) {
 	body, err := ioutil.ReadAll(r.Body)
 	var fPass models.Password
@@ -144,9 +146,6 @@ func NewPassword(w http.ResponseWriter, r *http.Request) {
 	password := fPass.Password
 	email := fPass.Email
 	otp := fPass.Otp
-	// fmt.Println(password)
-	// fmt.Println(email)
-	// fmt.Println(otp)
 
 	// 1. Check email
 	users := auth.EmailPassword(fPass.Email)

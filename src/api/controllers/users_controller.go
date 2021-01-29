@@ -18,9 +18,8 @@ import (
 	"github.com/gorilla/mux"
 )
 
+// UserProfile function return the user profile by taking the userID as parameter ..
 func UserProfile(w http.ResponseWriter, r *http.Request) {
-
-	// This function return the user profile by taking the userID as parameter ..
 
 	db, err := database.Connect()
 	if err != nil {
@@ -46,9 +45,8 @@ func UserProfile(w http.ResponseWriter, r *http.Request) {
 	}(repo)
 }
 
+//UploadImage function returns the filename(to save in database) of the saved file or an error if it occurs
 func UploadImage(w http.ResponseWriter, r *http.Request) {
-
-	//this function returns the filename(to save in database) of the saved file or an error if it occurs
 
 	name, err := FileUpload(r)
 	if err != nil {
@@ -76,7 +74,6 @@ func UploadImage(w http.ResponseWriter, r *http.Request) {
 			responses.ERROR(w, http.StatusUnprocessableEntity, err)
 			return
 		}
-		// w.Header().Set("Location", fmt.Sprintf("%s%s/%d", r.Host, r.RequestURI))
 		responses.JSON(w, http.StatusCreated, user)
 	}(repo)
 	fmt.Println(name)
@@ -84,9 +81,8 @@ func UploadImage(w http.ResponseWriter, r *http.Request) {
 
 }
 
+//FileUpload funtion ready the file as formfile and store the file where specify
 func FileUpload(r *http.Request) (string, error) {
-
-	//This funtion ready the file as formfile and store the file where specify
 
 	r.ParseMultipartForm(32 << 10)
 
@@ -108,6 +104,7 @@ func FileUpload(r *http.Request) (string, error) {
 	return handler.Filename, nil
 }
 
+// CreateUser fuction is for test by creating user by api direct
 func CreateUser(w http.ResponseWriter, r *http.Request) {
 
 	// This fuction is for test by creating user by api direct
@@ -153,9 +150,9 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 	}(repo)
 }
 
+// ChangePassword function is use to update password when user is loged in
 func ChangePassword(w http.ResponseWriter, r *http.Request) {
 
-	// This function is use to update password when user is loged in
 	// it checks the use by token
 
 	body, err := ioutil.ReadAll(r.Body)
@@ -197,9 +194,8 @@ func ChangePassword(w http.ResponseWriter, r *http.Request) {
 
 }
 
+// UpdateUser function is use to update user details like name
 func UpdateUser(w http.ResponseWriter, r *http.Request) {
-
-	// This function is use to update user details like name
 
 	vars := mux.Vars(r)
 	id, err := strconv.ParseUint(vars["id"], 10, 32)
@@ -301,9 +297,8 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) {
 
 //ADMIN PART
 
+// AdminGetUsers function is use to by admin to fetch all users
 func AdminGetUsers(w http.ResponseWriter, r *http.Request) {
-
-	// This function is use to by admin to fetch all users
 
 	db, err := database.Connect()
 	if err != nil {
@@ -311,15 +306,13 @@ func AdminGetUsers(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	user_id, user_type, err := auth.ExtractClaim(r)
+	_, userType, err := auth.ExtractClaim(r)
 	if err != nil {
 		responses.ERROR(w, http.StatusUnauthorized, err)
 		return
 	}
-	fmt.Println("USER :", user_id)
-	fmt.Println("USER :", user_type)
 	repo := crud.NewRepositoryUsersCURD(db)
-	if user_type == "admin" {
+	if userType == "admin" {
 		func(UserRepository repository.UserRepository) {
 			users, err := UserRepository.FindAll()
 			if err != nil {
@@ -330,15 +323,14 @@ func AdminGetUsers(w http.ResponseWriter, r *http.Request) {
 			responses.JSON(w, http.StatusOK, users)
 		}(repo)
 	}
-	if user_type == "user" {
+	if userType == "user" {
 		responses.JSON(w, http.StatusUnauthorized, err)
 		return
 	}
 }
 
+// AdminUploadImage function is use to upload profile pic of admin
 func AdminUploadImage(w http.ResponseWriter, r *http.Request) {
-
-	// this function is use to upload profile pic of admin
 
 	//this function returns the filename(to save in database) of the saved file or an error if it occurs
 
@@ -349,13 +341,13 @@ func AdminUploadImage(w http.ResponseWriter, r *http.Request) {
 		responses.ERROR(w, http.StatusInternalServerError, err)
 		return
 	}
-	_, user_type, err := auth.ExtractClaim(r)
+	_, userType, err := auth.ExtractClaim(r)
 	if err != nil {
 		responses.ERROR(w, http.StatusUnauthorized, err)
 		return
 	}
 	repo := crud.NewRepositoryUsersCURD(db)
-	if user_type == "admin" {
+	if userType == "admin" {
 		func(UserRepository repository.UserRepository) {
 			user.ProfilePic = name
 			user, err := UserRepository.Update(uint32(1), user)
@@ -366,18 +358,15 @@ func AdminUploadImage(w http.ResponseWriter, r *http.Request) {
 			// w.Header().Set("Location", fmt.Sprintf("%s%s/%d", r.Host, r.RequestURI))
 			responses.JSON(w, http.StatusCreated, user)
 		}(repo)
-		fmt.Println(name)
-		fmt.Println(err)
 	}
-	if user_type == "user" {
+	if userType == "user" {
 		responses.ERROR(w, http.StatusUnauthorized, err)
 		return
 	}
 }
 
+// AdminProfile function return the profile of the admin
 func AdminProfile(w http.ResponseWriter, r *http.Request) {
-
-	// this function return the profile of the admin
 
 	db, err := database.Connect()
 	if err != nil {
@@ -386,13 +375,13 @@ func AdminProfile(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// defer db.Close()
-	_, user_type, err := auth.ExtractClaim(r)
+	_, userType, err := auth.ExtractClaim(r)
 	if err != nil {
 		responses.ERROR(w, http.StatusUnauthorized, err)
 		return
 	}
 	repo := crud.NewRepositoryUsersCURD(db)
-	if user_type == "admin" {
+	if userType == "admin" {
 		func(UserRepository repository.UserRepository) {
 			admin, err := UserRepository.Admin()
 			if err != nil {
@@ -403,15 +392,14 @@ func AdminProfile(w http.ResponseWriter, r *http.Request) {
 			responses.JSON(w, http.StatusOK, admin)
 		}(repo)
 	}
-	if user_type == "user" {
+	if userType == "user" {
 		responses.ERROR(w, http.StatusUnauthorized, err)
 		return
 	}
 }
 
+//GetUser fuction is use to fetch th profile of indiviual user
 func GetUser(w http.ResponseWriter, r *http.Request) {
-
-	//This fuction is use to fetch th profile of indiviual user
 
 	vars := mux.Vars(r)
 	id, err := strconv.ParseUint(vars["id"], 10, 32)
@@ -424,15 +412,14 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 		responses.ERROR(w, http.StatusInternalServerError, err)
 		return
 	}
-	// defer db.Close()
-	_, user_type, err := auth.ExtractClaim(r)
+	_, userType, err := auth.ExtractClaim(r)
 	if err != nil {
 		responses.ERROR(w, http.StatusUnauthorized, err)
 		return
 	}
 	repo := crud.NewRepositoryUsersCURD(db)
 
-	if user_type == "admin" {
+	if userType == "admin" {
 		func(UserRepository repository.UserRepository) {
 			user, err := UserRepository.FindUserById(uint32(id))
 			if err != nil {
@@ -444,9 +431,8 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// AdminUpdateUser function is to update detials of admin like name
 func AdminUpdateUser(w http.ResponseWriter, r *http.Request) {
-
-	// This function is to update detials of admin like name
 
 	vars := mux.Vars(r)
 	id, err := strconv.ParseUint(vars["id"], 10, 32)
@@ -474,13 +460,13 @@ func AdminUpdateUser(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// defer db.Close()
-	_, user_type, err := auth.ExtractClaim(r)
+	_, userType, err := auth.ExtractClaim(r)
 	if err != nil {
 		responses.ERROR(w, http.StatusUnauthorized, err)
 		return
 	}
 	repo := crud.NewRepositoryUsersCURD(db)
-	if user_type == "admin" {
+	if userType == "admin" {
 		func(UserRepository repository.UserRepository) {
 			rows, err := UserRepository.UpdateByAdmin(uint32(id), user)
 			if err != nil {
@@ -491,15 +477,14 @@ func AdminUpdateUser(w http.ResponseWriter, r *http.Request) {
 			responses.JSON(w, http.StatusOK, rows)
 		}(repo)
 	}
-	if user_type == "user" {
+	if userType == "user" {
 		responses.ERROR(w, http.StatusUnauthorized, err)
 		return
 	}
 }
 
+//DeleteUserByAdmin is use for delete/deactivate user by admin
 func DeleteUserByAdmin(w http.ResponseWriter, r *http.Request) {
-
-	//This is use for delete/deactivate user by admin
 
 	vars := mux.Vars(r)
 	id, err := strconv.ParseUint(vars["id"], 10, 32)
@@ -525,13 +510,13 @@ func DeleteUserByAdmin(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	_, user_type, err := auth.ExtractClaim(r)
+	_, userType, err := auth.ExtractClaim(r)
 	if err != nil {
 		responses.ERROR(w, http.StatusUnauthorized, err)
 		return
 	}
 	repo := crud.NewRepositoryUsersCURD(db)
-	if user_type == "admin" {
+	if userType == "admin" {
 		func(UserRepository repository.UserRepository) {
 			rows, err := UserRepository.DeleteByAdmin(uint32(id), user)
 			if err != nil {
@@ -542,7 +527,7 @@ func DeleteUserByAdmin(w http.ResponseWriter, r *http.Request) {
 			responses.JSON(w, http.StatusOK, rows)
 		}(repo)
 	}
-	if user_type == "user" {
+	if userType == "user" {
 		responses.ERROR(w, http.StatusUnauthorized, err)
 		return
 	}

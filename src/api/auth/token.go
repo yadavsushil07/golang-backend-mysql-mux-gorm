@@ -12,16 +12,18 @@ import (
 	jwt "github.com/dgrijalva/jwt-go"
 )
 
-func CreateToken(user_id uint32, user_type string) (string, error) {
+// CreateToken it create token
+func CreateToken(userID uint32, userType string) (string, error) {
 	claims := jwt.MapClaims{}
 	claims["authorized"] = true
-	claims["user_id"] = user_id
-	claims["user_type"] = user_type
+	claims["user_id"] = userID
+	claims["user_type"] = userType
 	claims["exp"] = time.Now().Add(time.Hour * 1).Unix()
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	return token.SignedString(config.SECRETKEY)
 }
 
+// TokenValid it valid token
 func TokenValid(r *http.Request) error {
 	tokenString := ExtractToken(r)
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
@@ -42,6 +44,7 @@ func TokenValid(r *http.Request) error {
 	return nil
 }
 
+// ExtractToken this fuction is use to extract token from the string
 func ExtractToken(r *http.Request) string {
 	keys := r.URL.Query()
 	token := keys.Get("token")
@@ -55,6 +58,7 @@ func ExtractToken(r *http.Request) string {
 	return ""
 }
 
+// ExtractClaim this function is use to extract userid and usertype from usertoken
 func ExtractClaim(r *http.Request) (uint32, string, error) {
 	tokenString := ExtractToken(r)
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {

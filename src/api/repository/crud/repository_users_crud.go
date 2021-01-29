@@ -14,9 +14,8 @@ type repositoryUsersCRUD struct {
 	db *gorm.DB
 }
 
+// NewRepositoryUsersCURD function is use to  update data in the database
 func NewRepositoryUsersCURD(db *gorm.DB) *repositoryUsersCRUD {
-
-	// this function is use to  update data in the database
 
 	return &repositoryUsersCRUD{db}
 }
@@ -125,9 +124,8 @@ func (r *repositoryUsersCRUD) FindUserByEmail(email string) (models.User, error)
 	return user, errors.New("Record not found")
 }
 
+// FindUserById function is use to find user by id and this function is only call by admin
 func (r *repositoryUsersCRUD) FindUserById(id uint32) (models.User, error) {
-
-	// this funvtion is use to find user by id and this function is only call by admin
 
 	var err error
 	user := models.User{}

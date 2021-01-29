@@ -7,6 +7,7 @@ import (
 	"gorm.io/gorm"
 )
 
+//Connect this function is use to connect the database.
 func Connect() (*gorm.DB, error) {
 
 	db, err := gorm.Open(mysql.Open(config.DBURL), &gorm.Config{})
